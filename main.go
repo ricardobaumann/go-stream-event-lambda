@@ -8,19 +8,14 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-func Handler(ctx context.Context, e events.DynamoDBEvent) {
+func handler(ctx context.Context, snsEvent events.SNSEvent) {
+	for _, record := range snsEvent.Records {
+		snsRecord := record.SNS
 
-	for _, record := range e.Records {
-		fmt.Printf("Processing request data for event ID %s, type %s.\n", record.EventID, record.EventName)
-
-		// Print new values for attributes of type String
-		for name, value := range record.Change.NewImage {
-			if value.DataType() == events.DataTypeString {
-				fmt.Printf("Attribute name: %s, value: %s\n", name, value.String())
-			}
-		}
+		fmt.Printf("[%s %s] Message = %s \n", record.EventSource, snsRecord.Timestamp, snsRecord.Message)
 	}
 }
+
 func main() {
-	lambda.Start(Handler)
+	lambda.Start(handler)
 }

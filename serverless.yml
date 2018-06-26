@@ -20,7 +20,7 @@ service: go-stream-event-lambda # NOTE: update this with your service name
 provider:
   name: aws
   runtime: go1.x
-  region: eu-west-1
+  region: eu-central-1
 
 # you can overwrite defaults here
 #  stage: dev
@@ -56,8 +56,9 @@ functions:
   hello:
     handler: bin/main
     events:
-      - stream: arn:aws:dynamodb:eu-west-1:933782373565:table/staging-content-api-cache/stream/2018-01-26T14:02:51.676
-
+      #- stream: arn:aws:dynamodb:eu-west-1:933782373565:table/staging-content-api-cache/stream/2018-01-26T14:02:51.676
+      - sns:
+          arn: arn:aws:sns:eu-central-1:656201843059:fuzo-test
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
